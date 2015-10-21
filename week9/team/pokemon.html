@@ -58,11 +58,11 @@ function solution3(data){
 }
 
 function solution4(data){
-    return 'TODO'
+    return _.sortBy(data, function(obj) { return obj['Attack']; })[0]['Name']
 }
 
 function solution5(data){
-    return 'TODO'
+    return _.pluck(_.filter(data, function(obj) { return obj['Type'] == 'GRASS'; }), 'Name').join(', ')
 }
 
 function run(id, solutionFunc, data){
