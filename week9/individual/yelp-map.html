@@ -29,17 +29,17 @@
     <h3>Questions</h3>
 
     <section id="q1" class="question">
-        <h4>Where are all the McDonloads in Phoenix?</h4>
+        <h4>1) Where are all the McDonloads in Phoenix?</h4>
         <div class="answer"></div>
     </section>
 
     <section id="q2" class="question">
-        <h4>Where are all the Starbucks in Phoenix?</h4>
+        <h4>2) Where are all the Starbucks in Phoenix?</h4>
         <div class="answer"></div>
     </section>
 
     <section id="q3" class="question">
-        <h4>Where are all the McDonloads and Starbucks in Phoenix?</h4>
+        <h4>3) Where are all the McDonloads and Starbucks in Phoenix?</h4>
         <ul>
             <li>McDonloads (blue circles)</li>
             <li>Starbucks (green circles)</li>
@@ -48,7 +48,7 @@
     </section>
 
     <section id="q4" class="question">
-        <h4>What are the star ratings of a sample of 200 businesses in Phonenix?</h4>
+        <h4>4) What are the star ratings of a sample of 200 businesses in Phonenix?</h4>
         <ul>
             <li>represent star rating using the brightness of red</li>
         </ul>
@@ -57,7 +57,7 @@
 
 
     <section id="q5" class="question">
-        <h4>How are Starbucks located with respect to the city center of Phonenix?</h4>
+        <h4>5) How are Starbucks located with respect to the city center of Phonenix?</h4>
         <ul>
             <li>draw a line from each Starbucks to the city center</li>
         </ul>
@@ -65,7 +65,7 @@
     </section>
 
     <section id="q6" class="question">
-        <h4>How is the distance from the city center related to the number of reviews?</h4>
+        <h4>6) How is the distance from the city center related to the number of reviews?</h4>
         <ul>
             <li>same as above, but represent the number of reviews using the size of each circle</li>
         </ul>
@@ -73,7 +73,7 @@
     </section>
 
     <section id="q7" class="question">
-        <h4>Where are good restaurants in Phoenix?</h4>
+        <h4>7) Where are good restaurants in Phoenix?</h4>
         <ul>
             <li>a restaurant is a business that belongs to the "Restaurants" category</li>
             <li>a good restaurant is defined as one with at least 3.5 star ratings and at least 5 reviews</li>
@@ -82,7 +82,7 @@
     </section>
 
     <section id="q8" class="question">
-        <h4>What are the open/close statues of good restaurants in Phoenix?</h4>
+        <h4>8) What are the open/close statues of good restaurants in Phoenix?</h4>
         <ul>
             <li>based on the previous map, mark open using green, close using red</li>
         </ul>
@@ -90,7 +90,7 @@
     </section>
 
     <section id="q9" class="question">
-        <h4>What are the UPS stores and what are their coverages?</h4>
+        <h4>9) What are the UPS stores and what are their coverages?</h4>
         <ul>
             <li>coverage is defined as within a 5000 meter radius</li>
         </ul>
@@ -98,7 +98,7 @@
     </section>
 
     <section id="q10" class="question">
-        <h4>Where are McDonald's and Burger Kings competing nearby?</h4>
+        <h4>10) Where are McDonald's and Burger Kings competing nearby?</h4>
         <ul>
             <li>nearby is defined as within 1000 meters</li>
         </ul>
@@ -155,7 +155,12 @@ function solution1(){
         accessToken: 'pk.eyJ1IjoiZG91Ymxlc2hvdyIsImEiOiJjaWZ5Y3B1eTE1MHRidWRtMG9uZXluajg4In0.u5ONW27Ly5cU7M5KYi6Y9Q'
     }).addTo(map)
 
-    // TODO
+    var mcds = _.chain(items)
+            .filter(function(obj) {
+                return ((obj.city == 'Phoenix') && (obj.name == "McDonald's"))
+            }).map(function(obj) {
+                L.marker([obj.latitude, obj.longitude]).addTo(map)
+            }).value()
 }
 
 function solution2(){
@@ -167,7 +172,12 @@ function solution2(){
         accessToken: 'pk.eyJ1IjoiZG91Ymxlc2hvdyIsImEiOiJjaWZ5Y3B1eTE1MHRidWRtMG9uZXluajg4In0.u5ONW27Ly5cU7M5KYi6Y9Q'
     }).addTo(map)
 
-    // TODO
+    var sbucks = _.chain(items)
+            .filter(function(obj) {
+                return ((obj.city == 'Phoenix') && (obj.name == "Starbucks"))
+            }).map(function(obj) {
+                L.marker([obj.latitude, obj.longitude]).addTo(map)
+            }).value()
 }
 
 function solution3(){
@@ -179,12 +189,27 @@ function solution3(){
         accessToken: 'pk.eyJ1IjoiZG91Ymxlc2hvdyIsImEiOiJjaWZ5Y3B1eTE1MHRidWRtMG9uZXluajg4In0.u5ONW27Ly5cU7M5KYi6Y9Q'
     }).addTo(map)
 
-    // TODO
-    var circle = L.circle([33.45, -112.06], 500, {
-        color: 'red',
-        fillColor: '#f03',
-        fillOpacity: 0.5
-    }).addTo(map);
+    var sbucks = _.chain(items)
+            .filter(function(obj) {
+                return ((obj.city == 'Phoenix') && (obj.name == "Starbucks"))
+            }).map(function(obj) {
+                L.circle([obj.latitude, obj.longitude], 500, {
+                    color: 'green',
+                    fillColor: 'green',
+                    fillOpacity: 0.5
+                }).addTo(map);
+            }).value()
+    var mcds = _.chain(items)
+            .filter(function(obj) {
+                return ((obj.city == 'Phoenix') && (obj.name == "McDonald's"))
+            }).map(function(obj) {
+                L.circle([obj.latitude, obj.longitude], 500, {
+                    color: 'blue',
+                    fillColor: 'blue',
+                    fillOpacity: 0.5
+                }).addTo(map);
+            }).value()
+
 }
 
 function solution4(){
@@ -196,12 +221,17 @@ function solution4(){
         accessToken: 'pk.eyJ1IjoiZG91Ymxlc2hvdyIsImEiOiJjaWZ5Y3B1eTE1MHRidWRtMG9uZXluajg4In0.u5ONW27Ly5cU7M5KYi6Y9Q'
     }).addTo(map)
 
-    // TODO
-    var circle = L.circle([33.45, -112.06], 500, {
-        color: 'red',
-        fillColor: '#f03',
-        fillOpacity: 0.5
-    }).addTo(map);
+    _.chain(items)
+        .filter(function(obj) {
+            return (obj.city == 'Phoenix')
+        }).take(100)
+        .map(function(obj) {
+            L.circle([obj.latitude, obj.longitude], 100, {
+                color: 'red',
+                fillColor: 'red',
+                fillOpacity: parseFloat(obj.stars) / 5.0
+            }).addTo(map);
+        }).value()
 }
 
 function solution5(){
@@ -217,19 +247,17 @@ function solution5(){
         accessToken: 'pk.eyJ1IjoiZG91Ymxlc2hvdyIsImEiOiJjaWZ5Y3B1eTE1MHRidWRtMG9uZXluajg4In0.u5ONW27Ly5cU7M5KYi6Y9Q'
     }).addTo(map)
 
-    // TODO: modify the code below to develop your solution
-
-    var itemsInPhoenix = _.filter(items, {'city': 'Phoenix'})
-
-    // draw a line connecting the first two items
-    var latlng1 = [itemsInPhoenix[0].latitude, itemsInPhoenix[0].longitude]
-    var latlng2 = [itemsInPhoenix[1].latitude, itemsInPhoenix[1].longitude]
-    var latlngs = [latlng1, latlng2]
-    var polyline = L.polyline(latlngs, {color: 'yellow'}).addTo(map);
-
-    // draw a circle on the first item
-    L.circle(latlng1, 500, {color: 'red'}).addTo(map);
-    L.circle(latlng2, 500, {color: 'blue'}).addTo(map);
+    var sbucks = _.chain(items)
+            .filter(function(obj) {
+                return ((obj.city == 'Phoenix') && (obj.name == "Starbucks"))
+            }).map(function(obj) {
+                L.circle([obj.latitude, obj.longitude], 500, {
+                    color: 'green',
+                    fillColor: 'green',
+                    fillOpacity: 0.5
+                }).addTo(map);
+                L.polyline([[obj.latitude, obj.longitude], cityCenterLatLng], {color: 'yellow'}).addTo(map);
+            }).value()
 }
 
 function solution6(){
@@ -244,6 +272,17 @@ function solution6(){
         accessToken: 'pk.eyJ1IjoiZG91Ymxlc2hvdyIsImEiOiJjaWZ5Y3B1eTE1MHRidWRtMG9uZXluajg4In0.u5ONW27Ly5cU7M5KYi6Y9Q'
     }).addTo(map)
 
+    var sbucks = _.chain(items)
+            .filter(function(obj) {
+                return ((obj.city == 'Phoenix') && (obj.name == "Starbucks"))
+            }).map(function(obj) {
+                L.circle([obj.latitude, obj.longitude], obj.review_count * 100, {
+                    color: 'green',
+                    fillColor: 'green',
+                    fillOpacity: 0.5
+                }).addTo(map);
+                L.polyline([[obj.latitude, obj.longitude], cityCenterLatLng], {color: 'yellow'}).addTo(map);
+            }).value()
 }
 
 function solution7(){
@@ -255,7 +294,19 @@ function solution7(){
         accessToken: 'pk.eyJ1IjoiZG91Ymxlc2hvdyIsImEiOiJjaWZ5Y3B1eTE1MHRidWRtMG9uZXluajg4In0.u5ONW27Ly5cU7M5KYi6Y9Q'
     }).addTo(map)
 
-    // TODO
+    var rests = _.chain(items)
+            .filter(function(obj) {
+                return ((obj.city == 'Phoenix') &&
+                        (obj.categories.indexOf('Restaurants') > -1) &&
+                        (parseInt(obj.review_count) >= 5) &&
+                        (parseFloat(obj.stars) >= 3.5))
+            }).map(function(obj) {
+                L.circle([obj.latitude, obj.longitude], 300, {
+                    color: 'red',
+                    fillColor: 'red',
+                    fillOpacity: 0.5
+                }).addTo(map);
+            }).value()
 }
 
 function solution8(){
@@ -267,7 +318,19 @@ function solution8(){
         accessToken: 'pk.eyJ1IjoiZG91Ymxlc2hvdyIsImEiOiJjaWZ5Y3B1eTE1MHRidWRtMG9uZXluajg4In0.u5ONW27Ly5cU7M5KYi6Y9Q'
     }).addTo(map)
 
-    // TODO
+    var rests = _.chain(items)
+            .filter(function(obj) {
+                return ((obj.city == 'Phoenix') &&
+                        (obj.categories.indexOf('Restaurants') > -1) &&
+                        (parseInt(obj.review_count) >= 5) &&
+                        (parseFloat(obj.stars) >= 3.5))
+            }).map(function(obj) {
+                L.circle([obj.latitude, obj.longitude], 300, {
+                    color: 'black',
+                    fillColor: obj.open?'green':'red',
+                    fillOpacity: 0.5
+                }).addTo(map);
+            }).value()
 }
 
 function solution9(){
@@ -279,7 +342,17 @@ function solution9(){
         accessToken: 'pk.eyJ1IjoiZG91Ymxlc2hvdyIsImEiOiJjaWZ5Y3B1eTE1MHRidWRtMG9uZXluajg4In0.u5ONW27Ly5cU7M5KYi6Y9Q'
     }).addTo(map)
 
-    // TODO
+    var ups = _.chain(items)
+            .filter(function(obj) {
+                return ((obj.city == 'Phoenix') &&
+                        (obj.name == 'The UPS Store'))
+            }).map(function(obj) {
+                L.circle([obj.latitude, obj.longitude], 5000, {
+                    color: 'black',
+                    fillColor: obj.open?'green':'red',
+                    fillOpacity: 0.5
+                }).addTo(map);
+            }).value()
 }
 
 function solution10(){
@@ -291,7 +364,28 @@ function solution10(){
         accessToken: 'pk.eyJ1IjoiZG91Ymxlc2hvdyIsImEiOiJjaWZ5Y3B1eTE1MHRidWRtMG9uZXluajg4In0.u5ONW27Ly5cU7M5KYi6Y9Q'
     }).addTo(map)
 
-    // TODO
+    var kings = _.chain(items)
+            .filter(function(obj) {
+                    console.log(obj.name)
+                return ((obj.city == 'Phoenix') && (obj.name == "Burger King"))
+            }).map(function(obj) {
+                L.circle([obj.latitude, obj.longitude], 1000, {
+                    color: 'red',
+                    fillColor: 'red',
+                    fillOpacity: 0.5
+                }).addTo(map);
+            }).value()
+    var mcds = _.chain(items)
+            .filter(function(obj) {
+                    console.log(obj.name)
+                return ((obj.city == 'Phoenix') && (obj.name == "McDonald's"))
+            }).map(function(obj) {
+                L.circle([obj.latitude, obj.longitude], 1000, {
+                    color: 'blue',
+                    fillColor: 'blue',
+                    fillOpacity: 0.5
+                }).addTo(map);
+            }).value()
 }
 
 var items = []

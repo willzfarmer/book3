@@ -14,56 +14,55 @@
     <h1>Image Diffusion Analysis</h1>
 
     <section id="q1" class="question">
-        <h4>How many unique original images?</h4>
+        <h4>1) How many unique original images?</h4>
         (hint: use 'Image Id Str')
         <div class="answer"></div>
     </section>
 
     <section id="q2" class="question">
-        <h4>How many unique original tweet users?</h4>
+        <h4>2) How many unique original tweet users?</h4>
         <div class="answer"></div>
     </section>
 
     <section id="q3" class="question">
-        <h4>How many times did image (592674938273865700) get retweeted?</h4>
+        <h4>3) How many times did image (592674938273865700) get retweeted?</h4>
         (the answer should be 10. see if you can compute it)
         <div class="answer"></div>
     </section>
 
     <section id="q4" class="question">
-        <h4>Which image has the most number of retweets?</h4>
+        <h4>4) Which image has the most number of retweets?</h4>
         (hint: use 'Image Id Str')
         <div class="answer"></div>
     </section>
 
     <section id="q5" class="question">
-        <h4>How many original tweets were there on 4/26/15?</h4>
+        <h4>5) How many original tweets were there on 4/26/15?</h4>
         <div class="answer"></div>
     </section>
 
     <section id="q6" class="question">
-        <h4>Among these original tweets on 4/26/15, what is the most number of times one was retweeted?</h4>
+        <h4>6) Among these original tweets on 4/26/15, what is the most number of times one was retweeted?</h4>
         <div class="answer"></div>
     </section>
 
     <section id="q7" class="question">
-        <h4>Among these original tweets on 4/26/15, what is the average number of times one was retweeted?</h4>
+        <h4>7) Among these original tweets on 4/26/15, what is the average number of times one was retweeted?</h4>
         <div class="answer"></div>
     </section>
 
     <section id="q8" class="question">
-        <h4>Among these original tweets on 4/26/15, how many of them got retweeted within one hour?</h4>
+        <h4>8) Among these original tweets on 4/26/15, how many of them got retweeted within one hour?</h4>
         <div class="answer"></div>
     </section>
 
     <section id="q9" class="question">
-        <h4>Among these original tweets on 4/26/15, what are the ten most retweeted?</h4>
+        <h4>9) Among these original tweets on 4/26/15, what are the ten most retweeted?</h4>
         <div class="answer"></div>
     </section>
 
     <section id="q10" class="question">
-        <h4>Among these ten most retweeted, how many of them contain images of people?</h4>
-        (hint: you will need to look at the photos yourself)
+        <h4>10) Among these ten most retweeted, how many of them contain images of people?</h4>
         <div class="answer"></div>
     </section>
 
@@ -149,23 +148,48 @@ function solution7(){
 }
 
 function solution8(){
-    // try to use the moment.js library to work with timestamps
-    // this is how you get the moment object representing the time a tweet was created
-    var momentCreatedAt = new Date(items[0]['* Tweet Created At'])
-
-    // hints: you may need to use these methods to get an one hour window
-    // http://momentjs.com/docs/#/durations/add/
-    // http://momentjs.com/docs/#/query/is-before/
-    console.log(momentCreatedAt)
-    return 'TODO'
+    var res =  _.chain(items)
+            .map(function(obj) { return [obj['* Tweet Created At'], obj['Image Id Str']]; })
+            .filter(function(arr) { return arr[0].startsWith('4/26/15'); })
+            .groupBy(function(arr) {
+                parts = arr[0].split(' ')
+                return parts[1].slice(0, 1) + parts[2];
+            }).mapValues(function(arr) { return arr.length; })
+            .pairs()
+            .sortBy(function(arr) { return parseInt(arr[0].slice(0, 1)); })
+            .map(function(arr) {
+                return arr.join(':');
+            }).value().join(', ');
+    return res
 }
 
 function solution9(){
-    return 'TODO'
+    return _.chain(items)
+            .map(function(obj) { return [obj['* Tweet Created At'], obj['Image Id Str']]; })
+            .filter(function(arr) { return arr[0].startsWith('4/26/15'); })
+            .map(function(arr) { return arr[1]; })
+            .groupBy(function(id) { return id })
+            .mapValues(function(arr) { return arr.length; })
+            .pairs()
+            .sortBy(function(arr) { return -arr[1]; })
+            .take(10)
+            .map(function(arr) { return arr[0]; })
+            .value().join(', ');
 }
 
 function solution10(){
-    return 'TODO'
+    return _.chain(items)
+            .map(function(obj) { return [obj['* Tweet Created At'], obj['Media Url']]; })
+            .filter(function(arr) { return arr[0].startsWith('4/26/15'); })
+            .map(function(arr) { return arr[1]; })
+            .groupBy(function(id) { return id })
+            .mapValues(function(arr) { return arr.length; })
+            .pairs()
+            .sortBy(function(arr) { return -arr[1]; })
+            .take(10)
+            .map(function(arr) {
+                return '<p><a href="' + arr[0] + '">' + arr[0] + '</a></p>';
+            }).value() + '<p>3, 5, 6, 10</p>' ;
 }
 
 function run(id, solutionFunc, data){
