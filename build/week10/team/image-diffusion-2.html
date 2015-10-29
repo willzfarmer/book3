@@ -59,7 +59,7 @@
           </section>
 
           <section id="q2" class="question collection-item">
-              <h4>question? (contributed by ???)</h4>
+              <h4>What is the average follower count for each person that tweets with coordinates? (Parker Illig)</h4>
               <div class="answer"></div>
           </section>
 
@@ -126,7 +126,7 @@ function solution1(){
        }).map(function(obj) {
            var latlng = JSON.parse(obj["Tweet Coords"].replace(/'/g, '"'))["coordinates"]
            latlng.reverse()
-           var circle = L.circle(latlng, 5000, {
+           var circle = L.circle(latlng, obj["User Followers Count"] * 2, {
                color: 'red',
                fillColor: '#f03',
                fillOpacity: 1
@@ -145,7 +145,15 @@ function solution1(){
 }
 
 function solution2(){
-    return 'TODO'
+    var filtered = _.filter(items, function(d){
+        return d['Tweet Coords'] != ""
+    })
+    filtered = _.uniq(filtered, 'Image Id Str')
+    filtered = _.uniq(filtered, 'User Screen Name')
+    console.log(filtered)
+    console.log(filtered.length)
+    var sum = _.sum(filtered, 'User Followers Count')
+    return (sum)/(filtered.length)
 }
 
 function solution3(){
