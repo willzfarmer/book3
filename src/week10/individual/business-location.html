@@ -52,29 +52,59 @@ function getCandidateLocations(){
 // Scoring Functions
 //
 
-function has_some_feature_1(loc){
-  // TODO
-  return true
+function gas_station_nearby(loc){
+  return _.chain(items)
+      .filter(function(obj) {
+            return (obj.categories.indexOf('Gas & Service Stations') > -1)
+        }).filter(function(obj) {
+            return (4 > geolib.getDistance(loc,
+                    {'latitude': obj.latitude,
+                    'longitude':obj.longitude}) / 1000)
+        }).value().length > 1
 }
 
-function has_some_feature_2(loc){
-  // TODO
-  return false
+function few_restaurants(loc){
+  return _.chain(items)
+      .filter(function(obj) {
+            return (obj.categories.indexOf('Restaurants') > -1)
+        }).filter(function(obj) {
+            return (0.5 > geolib.getDistance(loc,
+                    {'latitude': obj.latitude,
+                    'longitude':obj.longitude}) / 1000)
+        }).value().length < 2
 }
 
-function has_some_feature_3(loc){
-  // TODO
-  return true
+function gym_nearby(loc){
+  return _.chain(items)
+      .filter(function(obj) {
+            return (obj.categories.indexOf('Gyms') > -1)
+        }).filter(function(obj) {
+            return (2 > geolib.getDistance(loc,
+                    {'latitude': obj.latitude,
+                    'longitude':obj.longitude}) / 1000)
+        }).value().length > 1
 }
 
-function has_some_feature_4(loc){
-  // TODO
-  return false
+function nightclub_nearby(loc){
+  return _.chain(items)
+      .filter(function(obj) {
+            return (obj.categories.indexOf('Dance Clubs') > -1)
+        }).filter(function(obj) {
+            return (2 > geolib.getDistance(loc,
+                    {'latitude': obj.latitude,
+                    'longitude':obj.longitude}) / 1000)
+        }).value().length > 1
 }
 
-function has_some_feature_5(loc){
-  // TODO
-  return false
+function apartments_nearby(loc){
+  return _.chain(items)
+      .filter(function(obj) {
+            return (obj.categories.indexOf('Apartments') > -1)
+        }).filter(function(obj) {
+            return (2 > geolib.getDistance(loc,
+                    {'latitude': obj.latitude,
+                    'longitude':obj.longitude}) / 1000)
+        }).value().length > 1
 }
 
 //
@@ -175,11 +205,11 @@ function loadDataThenRunSolutions(){
 
       console.log('scoring all candidate locations')
 
-      scoreAndVisualize(locs, has_some_feature_1, visualize_true_or_false)
-      scoreAndVisualize(locs, has_some_feature_2, visualize_true_or_false)
-      scoreAndVisualize(locs, has_some_feature_3, visualize_true_or_false)
-      scoreAndVisualize(locs, has_some_feature_4, visualize_true_or_false)
-      scoreAndVisualize(locs, has_some_feature_5, visualize_true_or_false)
+      scoreAndVisualize(locs, gas_station_nearby, visualize_true_or_false)
+      scoreAndVisualize(locs, few_restaurants, visualize_true_or_false)
+      scoreAndVisualize(locs, gym_nearby, visualize_true_or_false)
+      scoreAndVisualize(locs, nightclub_nearby, visualize_true_or_false)
+      scoreAndVisualize(locs, apartments_nearby, visualize_true_or_false)
 
    })
    .fail(function(err){
