@@ -38,7 +38,7 @@
     <div class="parallax">
       <img src="cloud.jpg">
       <h1 id="title">What is my online activity?
-        <div class="authors">by Name</div>
+        <div class="authors">by Will Farmer</div>
       </h1>
     </div>
   </div>
@@ -56,8 +56,7 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/0.3.5/marked.min.js"></script>
   <script>
 
-// TODO: replace the FIREBAW_URL with your own
-var PERSONAL_FIREBASE_URL = 'https://doubleshow-bigdata-hci.firebaseio.com/'
+var PERSONAL_FIREBASE_URL = 'https://willzfarmer-bigdata.firebaseio.com/'
 
 // add the personal firebase url to the class's firebase
 
@@ -88,7 +87,7 @@ function analyze(events){
 
   ask(when_did_i_start_collecting, events)
   ask(how_many_emails_have_i_received_since, events)
-  ask(question1, events)
+  ask(how_many_emails_have_i_received_today, events)
   ask(question2, events)
   ask(question3, events)
   ask(question4, events)
@@ -101,14 +100,19 @@ function analyze(events){
 }
 
 function when_did_i_start_collecting(events){
-  return 'I started collecting from [TODO: earliest timestamp].'
+  var first = _.chain(events.gmail)
+                .pairs()
+                .map(function(arr) {
+                    return _.pairs(arr[1])
+                }).value()[0][0][1].date
+  return 'I started collecting from ' + first
 }
 
 function how_many_emails_have_i_received_since(events){
   return 'I received ' + _.values(events.gmail).length + ' emails.'
 }
 
-function question1(events){
+function how_many_emails_have_i_received_today(events){
   return 'I ...'
 }
 

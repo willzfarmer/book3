@@ -1,34 +1,19 @@
-three_before = false
-two_before = false
-one_before = false
-
 function decideWhetherOrNotToTrade(tweet){
     keys = ['game', 'money', 'fun', 'good', 'actor', 'news', 'movies', 'tech', 'music', 'people', 'apple', 'google']
     pluskeys = ['game', 'news', 'movies', 'tech', 'music', 'people']
     negkeys = ['money', 'fun', 'good', 'actor', 'apple']
-
     var positive = (_.reduce(pluskeys, function(p, n) {
-        return p || tweet.includes(n)
+        return p || tweet.tweet.includes(n)
     }, false))
     var negative = (_.reduce(negkeys, function(p, n) {
-        return p || tweet.includes(n)
+        return p || tweet.tweet.includes(n)
     }, false))
 
-    var trade = false
-
     if ((!positive) && (!negative)) {
-        trade = false
+        return false
     } else if (bank.currency === 'USD') {
-        trade = (positive)?false:true
+        return (positive)?false:true
     } else {
-        trade = (positive)?true:false
+        return (positive)?true:false
     }
-
-    var buffer = three_before
-
-    three_before = two_before
-    two_before = one_before
-    one_before = trade
-
-    return buffer
 }
